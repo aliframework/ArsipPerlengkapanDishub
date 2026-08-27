@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@layer base {
+  html { scroll-behavior: smooth; }
+  body { @apply bg-slate-50 text-slate-800 antialiased; }
+  ::selection { @apply bg-indigo-200 text-indigo-950; }
+  :focus-visible { @apply outline-none ring-2 ring-indigo-500 ring-offset-2; }
+}
+@layer utilities {
+  .page-enter { animation: page-enter .32s ease-out both; }
+  .surface-hover { @apply transition duration-200 hover:-translate-y-0.5 hover:border-indigo-200 hover:shadow-md; }
+}
+@keyframes page-enter { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+}
+@media print { @page { size: A4 landscape; margin: 8mm; } .no-print, aside, nav, button { display:none !important } main { margin:0 !important; padding:0 !important; max-width:none !important } body { background:#fff } .print-paper { box-shadow:none !important; border:0 !important; border-radius:0 !important; } .print-heading { break-after:avoid; } .print-table { min-width:0 !important; font-size:8.5px; } .print-table th,.print-table td { padding:6px !important; vertical-align:top; } thead { display:table-header-group; } tr { break-inside:avoid; } .print-single { padding:0 !important; font-size:10.5px; break-inside:avoid; } .print-single .print-heading { padding-bottom:8px; } .print-single .print-heading > div { gap:9px; } .print-single .print-heading div > div:first-child { height:32px; width:32px; border-radius:7px; font-size:13px; } .print-single .print-heading h1 { font-size:15px; line-height:19px; } .print-single .print-heading p { font-size:9.5px; } .print-single .mt-6 { margin-top:13px; } .print-single .gap-y-6 { row-gap:9px; } .print-single .space-y-2\.5 > :not([hidden]) ~ :not([hidden]) { margin-top:4px; } .print-single h2 { margin-bottom:5px !important; font-size:10.5px !important; } .print-single dl > div { grid-template-columns:105px 1fr; gap:7px; font-size:10px; line-height:14px; } .print-description { margin-top:11px !important; padding-top:8px !important; } .print-description p { margin-top:4px !important; max-height:48px; overflow:hidden; font-size:10px !important; line-height:15px !important; } .print-photos { margin-top:10px !important; padding-top:8px !important; } .print-photos > div { margin-top:5px !important; gap:7px !important; } .print-photos img { height:62px !important; border-radius:4px !important; } .print-footer { margin-top:10px !important; padding-top:6px !important; font-size:8.5px !important; } }

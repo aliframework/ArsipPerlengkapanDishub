@@ -1,0 +1,13 @@
+import { NextResponse } from 'next/server';
+import { randomUUID } from 'crypto';
+import { createClient } from '@/lib/supabase/server';
+import { createAdminClient } from '@/lib/supabase/admin';
+
+const samples=[
+  ['Manguharjo','Jl. Pahlawan','Rambu Lalu Lintas','Ringan','Belum Ditangani'],
+  ['Taman','Jl. Diponegoro','APILL','Sedang','Dalam Proses'],
+  ['Kartoharjo','Jl. Soekarno Hatta','Cermin Tikungan','Berat','Belum Ditangani'],
+] as const;
+function unavailable(){return NextResponse.json({error:'Fitur dummy hanya tersedia pada mode development.'},{status:403});}
+export async function POST(){if(process.env.NODE_ENV==='production')return unavailable();try{const s=createClient();const {data:{user}}=await s.auth.getUser();if(!user)return NextResponse.json({error:'Sesi login tidak valid.'},{status:401});const admin=createAdminClient();for(const [kecamatan,jalan,jenis,tingkat,status] of samples){const {data:kec}=await admin.from('ref_kecamatan').select('id').eq('nama',kecamatan).single();if(!kec)throw new Error('Master kecamatan belum tersedia.');const kelName='DEMO '+kecamatan;await admin.from('ref_kelurahan').upsert({kecamatan_id:kec.id,nama:kelName},{onConflict:'kecamatan_id,nama'});const nomor='DISHUB-DEMO-'+new Date().toISOString().slice(0,10).replaceAll('-','')+'-'+randomUUID().slice(0,6).toUpperCase();const {error}=await admin.from('laporan_kerusakan').insert({nomor_laporan:nomor,sumber_laporan:'Masyarakat',nama_pelapor:'Pelapor Dummy '+kecamatan,no_wa_pelapor:'081234567890',admin_id:user.id,nama_petugas_input:'Petugas Dummy',nip_petugas_input:'199001012020011001',nama_jalan:jalan,kecamatan,kelurahan:kelName,jenis_perlengkapan:jenis,tingkat_kerusakan:tingkat,deskripsi:'Data dummy sementara untuk pengujian fitur aplikasi.',status});if(error)throw error;}return NextResponse.json({message:'3 laporan dummy berhasil ditambahkan.'});}catch(e){return NextResponse.json({error:'Gagal menambahkan dummy: '+(e instanceof Error?e.message:'Kesalahan tidak diketahui')},{status:500});}}
+export async function DELETE(){if(process.env.NODE_ENV==='production')return unavailable();try{const s=createClient();const {data:{user}}=await s.auth.getUser();if(!user)return NextResponse.json({error:'Sesi login tidak valid.'},{status:401});const admin=createAdminClient();const {error,count}=await admin.from('laporan_kerusakan').delete({count:'exact'}).like('nomor_laporan','DISHUB-DEMO-%');if(error)throw error;return NextResponse.json({message:`${count||0} laporan dummy berhasil dihapus.`});}catch(e){return NextResponse.json({error:'Gagal menghapus dummy: '+(e instanceof Error?e.message:'Kesalahan tidak diketahui')},{status:500});}}

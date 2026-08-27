@@ -1,0 +1,3 @@
+import { createClient } from '@/lib/supabase/server';
+export type Filters={dari?:string;sampai?:string;bulan?:string;nomor?:string;jenis?:string};
+export async function getReports(f:Filters){const s=createClient();let q=s.from('laporan_kerusakan').select('*').order('created_at',{ascending:false});if(f.dari)q=q.gte('created_at',f.dari+'T00:00:00');if(f.sampai)q=q.lte('created_at',f.sampai+'T23:59:59');if(f.bulan)q=q.gte('created_at',f.bulan+'-01T00:00:00').lt('created_at',f.bulan+'-31T23:59:59');if(f.nomor)q=q.ilike('nomor_laporan','%'+f.nomor+'%');if(f.jenis)q=q.eq('jenis_perlengkapan',f.jenis);return q}

@@ -2,6 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 @layer base {
+  :root {
+    --background: 210 40% 98%;
+    --foreground: 222 47% 11%;
+    --primary: 244 75% 57%;
+    --primary-foreground: 0 0% 100%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 16% 47%;
+    --border: 214 32% 91%;
+    --success: 160 84% 39%;
+    --warning: 38 92% 50%;
+    --danger: 347 77% 50%;
+  }
   html { scroll-behavior: smooth; }
   body { @apply bg-slate-50 text-slate-800 antialiased; }
   ::selection { @apply bg-indigo-200 text-indigo-950; }

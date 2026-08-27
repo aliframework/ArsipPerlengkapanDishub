@@ -1,0 +1,11 @@
+'use client';
+import * as React from 'react';
+import * as DialogPrimitive from '@radix-ui/react-dialog';
+import {X} from 'lucide-react';
+import {cn} from '@/lib/utils';
+export const Sheet=DialogPrimitive.Root;export const SheetTrigger=DialogPrimitive.Trigger;export const SheetClose=DialogPrimitive.Close;
+export const SheetTitle=React.forwardRef<React.ElementRef<typeof DialogPrimitive.Title>,React.ComponentPropsWithoutRef<typeof DialogPrimitive.Title>>(({className,...props},ref)=><DialogPrimitive.Title ref={ref} className={cn('text-lg font-bold text-slate-900',className)} {...props}/>);SheetTitle.displayName='SheetTitle';
+export const SheetDescription=React.forwardRef<React.ElementRef<typeof DialogPrimitive.Description>,React.ComponentPropsWithoutRef<typeof DialogPrimitive.Description>>(({className,...props},ref)=><DialogPrimitive.Description ref={ref} className={cn('text-sm text-slate-500',className)} {...props}/>);SheetDescription.displayName='SheetDescription';
+export const SheetHeader=({className,...props}:React.HTMLAttributes<HTMLDivElement>)=><div className={cn('space-y-1.5 text-left',className)} {...props}/>;
+export const SheetFooter=({className,...props}:React.HTMLAttributes<HTMLDivElement>)=><div className={cn('mt-auto flex gap-2 border-t bg-white p-4',className)} {...props}/>;
+export const SheetContent=React.forwardRef<React.ElementRef<typeof DialogPrimitive.Content>,React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content>>(({className,children,...props},ref)=><DialogPrimitive.Portal><DialogPrimitive.Overlay className="fixed inset-0 z-[90] bg-slate-950/45 backdrop-blur-sm"/><DialogPrimitive.Content ref={ref} className={cn('fixed bottom-0 right-0 z-[100] flex max-h-[92dvh] w-full flex-col overflow-hidden rounded-t-3xl bg-white shadow-2xl outline-none sm:inset-y-0 sm:max-h-none sm:max-w-md sm:rounded-none',className)} {...props}>{children}<DialogPrimitive.Close className="absolute right-4 top-4 grid h-9 w-9 place-items-center rounded-full bg-slate-100 text-slate-500 transition hover:bg-slate-200" aria-label="Tutup"><X className="h-4 w-4"/></DialogPrimitive.Close></DialogPrimitive.Content></DialogPrimitive.Portal>);SheetContent.displayName='SheetContent';
